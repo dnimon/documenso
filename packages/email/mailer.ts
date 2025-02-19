@@ -88,6 +88,15 @@ const getTransport = (): Transporter => {
     });
   }
 
+  if (transport === 'disabled') {
+    // This provides a way to disable the email sending by creating a stub sendMail function
+    return {
+      async sendMail(_mailOptions) {
+        return {};
+      }
+    };
+  }
+
   return createTransport({
     host: process.env.NEXT_PRIVATE_SMTP_HOST ?? 'localhost:2500',
     port: Number(process.env.NEXT_PRIVATE_SMTP_PORT) || 587,
